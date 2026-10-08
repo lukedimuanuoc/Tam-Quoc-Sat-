@@ -19,7 +19,7 @@ function shuffle(a){for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()
 function deck(){let a=[];for(const [n,c] of Object.entries(cardCounts))for(let i=0;i<c;i++)a.push(n);return shuffle(a)}
 function gobj(x){return {name:x[0],f:x[1],max:x[2],hp:x[2],skill:x[3],shown:false}}
 function fill(){
-  const box=$('generalPick'); box.innerHTML='';
+  const box=$('generalPick'); if(box.querySelector('.general-btn')){S=null;return;} box.innerHTML='';
   const factions=['Ngụy','Thục','Ngô','Quần'];
   factions.forEach(f=>{
     const sec=document.createElement('div'); sec.style.marginBottom='10px';
