@@ -59,4 +59,28 @@ function check(){let alive=S.players.filter(p=>p.alive);let human=S.players[0];i
 function render(){if(!S)return;$('status').innerHTML='<b>Lượt '+(S.turn+1)+'</b> · '+(S.deck.length)+' lá trong deck · '+(S.winner?'Kết quả: '+S.winner:'Bạn chọn mục tiêu rồi dùng bài');let box=$('seats');box.innerHTML='';S.players.forEach(p=>{let d=document.createElement('div');d.className='seat'+(!p.alive?' dead':'')+(S.target===p.id?' target':'');let shown=p.shown;let names=shown?p.gs.map(g=>g.name).join(' / '):'??? / ???';d.innerHTML='<div class="name">Người chơi '+(p.id+1)+(p.ai?' 🤖':' 👤')+'</div><div>'+esc(names)+'</div><div class="tag">'+(shown?p.gs[0].f:'Chưa xác định')+'</div><div class="hp"><i style="width:'+Math.max(0,p.hp/p.max*100)+'%"></i></div><div>'+p.hp+'/'+p.max+' HP · '+p.hand.length+' bài</div>'+(p.alive&&p.id!==0?'<button style="margin-top:8px" data-target="'+p.id+'">Chọn mục tiêu</button>':'');box.appendChild(d)});box.querySelectorAll('[data-target]').forEach(b=>b.onclick=()=>{S.target=+b.dataset.target;$('targetText').textContent='Người chơi '+(S.target+1);render()});let h=$('hand');h.innerHTML='';S.players[0].hand.forEach((c,i)=>{let b=document.createElement('button');b.className='card';b.innerHTML='<b>'+esc(c)+'</b><small>'+cardHelp(c)+'</small>';b.onclick=()=>useCard(S.players[0],i);h.appendChild(b)});$('end').disabled=S.turn!==0||!!S.winner;$('draw').disabled=S.turn!==0||!!S.winner;$('reveal').disabled=S.turn!==0||!!S.winner}
 function cardHelp(c){return ({Slash:'1 dmg', 'Fire Slash':'2 dmg','Thunder Slash':'2 dmg',Dodge:'Né',Peach:'Hồi máu',Wine:'Tăng sát thương',Dismantlement:'Bỏ 1 bài',Snatch:'Cướp 1 bài',Duel:'2 dmg', 'Fire Attack':'1 dmg', 'Ex Nihilo':'Rút 2',Harvest:'Mọi người +1', 'Alliance Feast':'Mọi người hồi',Savage Assault:'Đánh mọi mục tiêu','Archery Attack':'Đánh mọi mục tiêu',Weapon:'Trang bị',Armor:'Trang bị','Horse +1':'Khoảng cách','Horse -1':'Khoảng cách'}[c]||'Hiệu ứng'))}
 document.querySelectorAll('.general-btn').forEach(b=>b.addEventListener('click',()=>pickGeneral(+b.dataset.i,b)));$('start').onclick=start;$('draw').onclick=()=>{draw(S.players[0],1);log('Bạn rút 1 lá.');render()};$('end').onclick=()=>{if(S.turn===0){next()}};$('reveal').onclick=()=>{reveal(S.players[0],1);render()};$('restart').onclick=()=>{location.reload()};
-</script></body></html>
+</script>
+<script>
+(function(){
+  const buttons=[...document.querySelectorAll('.general-btn')];
+  const counter=document.getElementById('pickCount');
+  function update(){const n=document.querySelectorAll('.general-btn.picked').length;if(counter)counter.textContent='Đã chọn: '+n+'/2';}
+  buttons.forEach(function(b){
+    b.addEventListener('click',function(){
+      if(b.classList.contains('picked')) b.classList.remove('picked');
+      else {
+        if(document.querySelectorAll('.general-btn.picked').length>=2){alert('Chỉ được chọn 2 tướng.');return;}
+        b.classList.add('picked');
+      }
+      update();
+    });
+  });
+  const startButton=document.getElementById('start');
+  if(startButton) startButton.addEventListener('click',function(){
+    if(document.querySelectorAll('.general-btn.picked').length!==2){alert('Hãy bấm chọn đủ 2 tướng trước!');return;}
+    if(typeof window.start==='function') window.start();
+  });
+  update();
+})();
+</script>
+</body></html>
