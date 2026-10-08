@@ -60,29 +60,7 @@ function render(){if(!S)return;$('status').innerHTML='<b>Lượt '+(S.turn+1)+'<
 function cardHelp(c){const labels={"Slash":"1 dmg","Fire Slash":"2 dmg","Thunder Slash":"2 dmg","Dodge":"Né","Peach":"Hồi máu","Wine":"Tăng sát thương","Dismantlement":"Bỏ 1 bài","Snatch":"Cướp 1 bài","Duel":"2 dmg","Fire Attack":"1 dmg","Ex Nihilo":"Rút 2","Harvest":"Mọi người +1","Alliance Feast":"Mọi người hồi","Savage Assault":"Đánh mọi mục tiêu","Archery Attack":"Đánh mọi mục tiêu","Weapon":"Trang bị","Armor":"Trang bị","Horse +1":"Khoảng cách","Horse -1":"Khoảng cách"};return labels[c]||"Hiệu ứng"}
 $('start').onclick=start;$('draw').onclick=()=>{draw(S.players[0],1);log('Bạn rút 1 lá.');render()};$('end').onclick=()=>{if(S.turn===0){next()}};$('reveal').onclick=()=>{reveal(S.players[0],1);render()};$('restart').onclick=()=>{location.reload()};
 </script>
-<script>
-(function(){
-  const buttons=[...document.querySelectorAll('.general-btn')];
-  const counter=document.getElementById('pickCount');
-  function update(){const n=document.querySelectorAll('.general-btn.picked').length;if(counter)counter.textContent='Đã chọn: '+n+'/2';}
-  buttons.forEach(function(b){
-    b.addEventListener('click',function(){
-      if(b.classList.contains('picked')) b.classList.remove('picked');
-      else {
-        if(document.querySelectorAll('.general-btn.picked').length>=2){alert('Chỉ được chọn 2 tướng.');return;}
-        b.classList.add('picked');
-      }
-      update();
-    });
-  });
-  const startButton=document.getElementById('start');
-  if(startButton) startButton.addEventListener('click',function(){
-    if(document.querySelectorAll('.general-btn.picked').length!==2){alert('Hãy bấm chọn đủ 2 tướng trước!');return;}
-    if(typeof window.start==='function') window.start();
-  });
-  update();
-})();
-</script>
+
 
 <script>
 window.toggleGeneral = function(button) {
